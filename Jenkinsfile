@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        PYTHON = "python3.11" // Adjust if your Jenkins node uses a different Python
+        PYTHON = "python" // On Windows, likely just 'python' or 'python3.11' if installed
     }
 
     stages {
@@ -15,29 +15,28 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh '''
-                    python -m pip install --upgrade pip
-                    pip install -r requirements.txt
-                '''
+                bat """
+                    %PYTHON% -m pip install --upgrade pip
+                    %PYTHON% -m pip install -r requirements.txt
+                """
             }
         }
 
         stage('Compile Kubeflow Pipeline') {
             steps {
-                // Optional: run a Python script that ensures pipeline.py compiles without errors
-                sh '''
-                    python -m py_compile pipeline.py
-                    echo "Kubeflow pipeline compiled successfully."
-                '''
+                bat """
+                    %PYTHON% -m py_compile pipeline.py
+                    echo Kubeflow pipeline compiled successfully.
+                """
             }
         }
 
         stage('Run MLflow Pipeline') {
             steps {
-                sh '''
-                    mkdir -p models
-                    python scripts/mlflow_pipeline.py
-                '''
+                bat """
+                    if not exist models mkdir models
+                    %PYTHON% scripts\\mlflow_pipeline.py
+                """
             }
         }
     }
