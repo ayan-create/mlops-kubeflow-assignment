@@ -17,7 +17,6 @@ pipeline {
         stage('Environment Setup') {
             steps {
                 echo 'Setting up Python environment and installing dependencies...'
-                bat "${env.PYTHON_BIN} -m pip install --upgrade pip"
                 bat "${env.PYTHON_BIN} -m pip install -r requirements.txt"
             }
         }
