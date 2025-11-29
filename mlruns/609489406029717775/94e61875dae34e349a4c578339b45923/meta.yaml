@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/asim/Desktop/d/univeristy/MLops/Ass4/mlops-kubeflow-assignment/mlruns/609489406029717775/94e61875dae34e349a4c578339b45923/artifacts
+end_time: 1764429328175
+entry_point_name: ''
+experiment_id: '609489406029717775'
+lifecycle_stage: active
+run_id: 94e61875dae34e349a4c578339b45923
+run_name: RF_MLflow_Run
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1764429327696
+status: 4
+tags: []
+user_id: asim

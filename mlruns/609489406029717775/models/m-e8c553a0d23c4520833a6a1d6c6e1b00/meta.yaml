@@ -1,0 +1,10 @@
+artifact_location: file:///C:/Users/asim/Desktop/d/univeristy/MLops/Ass4/mlops-kubeflow-assignment/mlruns/609489406029717775/models/m-e8c553a0d23c4520833a6a1d6c6e1b00/artifacts
+creation_timestamp: 1764429739308
+experiment_id: '609489406029717775'
+last_updated_timestamp: 1764429747754
+model_id: m-e8c553a0d23c4520833a6a1d6c6e1b00
+model_type: null
+name: random_forest_model
+source_run_id: d99554081dd342fd83c2e9cebb81ad3e
+status: 2
+status_message: null
