@@ -2,54 +2,54 @@ pipeline {
     agent any
 
     environment {
-        PYTHON = "python" // On Windows, likely just 'python' or 'python3.11' if installed
+        PYTHON_BIN = "python"   // Windows usually uses "python" instead of "python3"
+        ML_PIPELINE_SCRIPT = "scripts\\mlflow_pipeline.py"
     }
 
     stages {
-        stage('Checkout Code') {
+        stage('Checkout') {
             steps {
-                // Clone the repository
-                git branch: 'main', url: 'https://github.com/ayan-create/mlops-kubeflow-assignment.git'
+                echo 'Checking out code from GitHub...'
+                checkout scm
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Environment Setup') {
             steps {
-                bat """
-                    %PYTHON% -m pip install --upgrade pip
-                    %PYTHON% -m pip install -r requirements.txt
-                """
+                echo 'Setting up Python environment and installing dependencies...'
+                bat "${env.PYTHON_BIN} -m pip install --upgrade pip"
+                bat "${env.PYTHON_BIN} -m pip install -r requirements.txt"
             }
         }
 
-        stage('Compile Kubeflow Pipeline') {
+        stage('Data Setup') {
             steps {
-                bat """
-                    %PYTHON% -m py_compile pipeline.py
-                    echo Kubeflow pipeline compiled successfully.
-                """
+                echo 'Pulling DVC-tracked dataset...'
+                bat 'dvc pull'
             }
         }
 
-        stage('Run MLflow Pipeline') {
+        stage('Pipeline Compilation') {
             steps {
-                bat """
-                    if not exist models mkdir models
-                    %PYTHON% scripts\\mlflow_pipeline.py
-                """
+                echo 'Compiling Kubeflow pipeline to YAML...'
+                bat "${env.PYTHON_BIN} pipeline.py"
+            }
+        }
+
+        stage('Trigger MLflow Pipeline') {
+            steps {
+                echo 'Running MLflow pipeline...'
+                bat "${env.PYTHON_BIN} ${env.ML_PIPELINE_SCRIPT}"
             }
         }
     }
 
     post {
-        always {
-            echo "Pipeline finished. Check console output for logs."
-        }
         success {
-            echo "Pipeline completed successfully!"
+            echo 'Jenkins pipeline completed successfully!'
         }
         failure {
-            echo "Pipeline failed. Check logs for details."
+            echo 'Jenkins pipeline failed. Check the console output for errors.'
         }
     }
 }
