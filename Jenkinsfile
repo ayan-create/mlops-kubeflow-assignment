@@ -16,7 +16,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh '''
-                    python3 -m pip install --upgrade pip
+                    python -m pip install --upgrade pip
                     pip install -r requirements.txt
                 '''
             }
@@ -26,7 +26,7 @@ pipeline {
             steps {
                 // Optional: run a Python script that ensures pipeline.py compiles without errors
                 sh '''
-                    python3 -m py_compile pipeline.py
+                    python -m py_compile pipeline.py
                     echo "Kubeflow pipeline compiled successfully."
                 '''
             }
@@ -36,7 +36,7 @@ pipeline {
             steps {
                 sh '''
                     mkdir -p models
-                    python3 scripts/mlflow_pipeline.py
+                    python scripts/mlflow_pipeline.py
                 '''
             }
         }
