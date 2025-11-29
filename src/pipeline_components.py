@@ -216,58 +216,31 @@ def extract_data_mlflow(raw_data_path: str, extracted_output_path: str):
 # DATA PREPROCESSING
 # ---------------------------
 
-# def preprocess_data_mlflow(extracted_input_path: str, processed_output_path: str):
-#     df = pd.read_csv(extracted_input_path)
-
-#     # Separate features and target
-#     X = df.drop("MEDV", axis=1)
-#     y = df["MEDV"]
-
-#     # Scale features
-#     scaler = StandardScaler()
-#     X_scaled = scaler.fit_transform(X)
-
-#     # Split data
-#     X_train, X_test, y_train, y_test = train_test_split(
-#         X_scaled, y, test_size=0.2, random_state=42
-#     )
-
-#     # Ensure output folder exists
-#     os.makedirs(os.path.dirname(processed_output_path), exist_ok=True)
-
-#     # Save processed training data with original column names
-#     processed_df = pd.DataFrame(X_train, columns=X.columns)
-#     processed_df["label"] = y_train.values
-#     processed_df.to_csv(processed_output_path, index=False)
-
-#     return X_train, X_test, y_train, y_test, X.columns  # return columns for evaluation
-from sklearn.impute import SimpleImputer
-
 def preprocess_data_mlflow(extracted_input_path: str, processed_output_path: str):
     df = pd.read_csv(extracted_input_path)
 
-    # Fill missing values
-    imputer = SimpleImputer(strategy="mean")
+    # Separate features and target
     X = df.drop("MEDV", axis=1)
-    X_imputed = imputer.fit_transform(X)
-    
     y = df["MEDV"]
 
     # Scale features
     scaler = StandardScaler()
-    X_scaled = scaler.fit_transform(X_imputed)
+    X_scaled = scaler.fit_transform(X)
 
     # Split data
     X_train, X_test, y_train, y_test = train_test_split(
         X_scaled, y, test_size=0.2, random_state=42
     )
 
-    # Save processed training data for the training step
+    # Ensure output folder exists
+    os.makedirs(os.path.dirname(processed_output_path), exist_ok=True)
+
+    # Save processed training data with original column names
     processed_df = pd.DataFrame(X_train, columns=X.columns)
     processed_df["label"] = y_train.values
     processed_df.to_csv(processed_output_path, index=False)
 
-    return X_train, X_test, y_train, y_test
+    return X_train, X_test, y_train, y_test, X.columns  # return columns for evaluation
 
 # ---------------------------
 # MODEL TRAINING
