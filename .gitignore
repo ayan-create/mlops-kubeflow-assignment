@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+venv/
+.envrc
+
+# DVC cache and metadata (DVC will create .dvc and .dvcignore)
+.dvc/cache/
+.cache/
+# hide local remote config if any
+.dvc/tmp/
+
+# dataset folders (we track with DVC files, not raw binaries)
+data/raw/
+data/processed/
+
+# docker
+Dockerfile
+docker-compose.yml
+
+# Jupyter
+.ipynb_checkpoints/
